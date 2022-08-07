@@ -1,6 +1,4 @@
 import tkinter
-import tkinter.filedialog
-
 import customtkinter
 import random
 import os
@@ -30,10 +28,10 @@ def PwrdGenerator():
 ##---save entry mapping---##
 def save():
     if not len(pwrd_name.get()) == 0:
-        decrpyt()
+        decrypt()
         with open("test.txt",'a') as txt:
            txt.write(f'{pwrd_name.get()}: {password}\n')
-        encryt()
+        encrypt()
         pwrd_name.delete(0,'end')
         display_pward.pack_forget()
         display_pward.configure(text='Passwords')
@@ -41,7 +39,7 @@ def save():
         open_popup()
 
 ##---encrytpion---##
-def encryt():
+def encrypt():
     files = []
     for file in os.listdir():
         if file == "tkntTest1.py" or file == "thekey.key":
@@ -59,7 +57,7 @@ def encryt():
             thefile.write(contents_encrypted)
     return
 ##---decryption---##
-def decrpyt():
+def decrypt():
     files = []
     for file in os.listdir():
         if file == "tkntTest1.py" or file == "thekey.key":
@@ -93,8 +91,15 @@ def login_password():
 
 def saved_passwords():
     user_frame.destroy()
-##---Login Frame---##
+    decrypt()
+    passwords = tkinter.Text(password_frame,width= width,height=height)
+    filename = 'C:\\Users\\Stefano\\Documents\\GitHub\\Password-Generator\\tkinterTest\\test.txt'
+    with open(filename,'r') as f:
+        passwords.insert('1.0',f.read())
+    passwords.pack()
+    encrypt()
 
+##---Login Frame---##
 login_frame = customtkinter.CTkFrame(app,bg_color=bg,width=width,height=height)
 login_frame.pack()
 
@@ -141,18 +146,14 @@ slider_label = customtkinter.CTkLabel(user_frame,text="8 9 10 11 12 13 14 15 16 
                                       text_font= ('Courier',8,'bold'))
 slider_label.place(relx=0.75,rely=0.8,anchor=tkinter.CENTER)
 
+
 ##---open saved passwords button---##
 open_bttn = customtkinter.CTkButton(user_frame,text = "Saved Passwords",command = saved_passwords)
 open_bttn.place(relx=0.25,rely=0.75,anchor = tkinter.CENTER)
+
 ##--saved passwords frame--##
 password_frame = customtkinter.CTkFrame(app,bg_color=bg,width=width,height=height)
 password_frame.pack()
-
-file_dialog = tkinter.filedialog.askopenfilename(filetypes=[("test","*.txt")])
-with open("test.txt",'r') as txt:
-    data = txt.read()
-    textarea.insert
-
 
 app.mainloop()
 
