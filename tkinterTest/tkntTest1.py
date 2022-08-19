@@ -7,8 +7,8 @@ from cryptography.fernet import Fernet
 # Initializing Tkinter Window
 app = customtkinter.CTk()
 app.title("Password Generator")
-width = 800
-height = 600
+width = 1920
+height = 1080
 app.geometry(f'{width}x{height}')
 bg = customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
@@ -67,12 +67,12 @@ def decrypt():
             files.append(file)
 
     with open("thekey.key", "rb") as key:
-        secreykey = key.read()
+        secretkey = key.read()
 
     for file in files:
         with open(file, 'rb') as thefile:
             contents = thefile.read()
-        contents_decrypted = Fernet(secreykey).decrypt(contents)
+        contents_decrypted = Fernet(secretkey).decrypt(contents)
         with open(file, 'wb') as thefile:
             thefile.write(contents_decrypted)
     return
@@ -98,11 +98,14 @@ def login_password():
 def saved_passwords():
     user_frame.destroy()
     decrypt()
-    passwords = tkinter.Text(password_frame,width= width,height=height)
+    passwords = tkinter.Text(password_frame,width=width,height=height)
     filename = 'C:\\Users\\Stefano\\Documents\\GitHub\\Password-Generator\\tkinterTest\\test.txt'
     with open(filename, 'r') as f:
         passwords.insert('1.0', f.read())
+        passwords.config(state='disabled')
     passwords.pack()
+    go_back_button = customtkinter.CTkButton(passwords,text="Return")
+    go_back_button.place(relx=0.9, rely=0.1)
     encrypt()
 
 # Log in frame
@@ -161,8 +164,9 @@ open_bttn = customtkinter.CTkButton(user_frame,text = "Saved Passwords",command 
 open_bttn.place(relx=0.25, rely=0.75, anchor=tkinter.CENTER)
 
 # Saved passwords frame
-password_frame = customtkinter.CTkFrame(app, bg_color=bg, width=width, height=height)
+password_frame = customtkinter.CTkFrame(app)
 password_frame.pack()
+
 
 app.mainloop()
 
