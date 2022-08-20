@@ -7,9 +7,10 @@ from cryptography.fernet import Fernet
 # Initializing Tkinter Window
 app = customtkinter.CTk()
 app.title("Password Generator")
-width = 1920
-height = 1080
+width = 1080
+height = 720
 app.geometry(f'{width}x{height}')
+app.resizable(0,0)
 bg = customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
 
@@ -67,12 +68,12 @@ def decrypt():
             files.append(file)
 
     with open("thekey.key", "rb") as key:
-        secretkey = key.read()
+        secreykey = key.read()
 
     for file in files:
         with open(file, 'rb') as thefile:
             contents = thefile.read()
-        contents_decrypted = Fernet(secretkey).decrypt(contents)
+        contents_decrypted = Fernet(secreykey).decrypt(contents)
         with open(file, 'wb') as thefile:
             thefile.write(contents_decrypted)
     return
@@ -96,17 +97,27 @@ def login_password():
 
 # Saved passwords window
 def saved_passwords():
-    user_frame.destroy()
+    user_frame.forget()
+    global password_frame
+    password_frame = customtkinter.CTkFrame(app, bg_color=bg, width=width, height=height)
+    password_frame.pack()
+    passwords = tkinter.Text(password_frame, width=width, height=height)
+    passwords.pack()
+    go_back_bttn = customtkinter.CTkButton(password_frame, text='Go Back', command=go_back)
+    go_back_bttn.place(relx=0.8, rely=0.05)
     decrypt()
-    passwords = tkinter.Text(password_frame,width=width,height=height)
     filename = 'C:\\Users\\Stefano\\Documents\\GitHub\\Password-Generator\\tkinterTest\\test.txt'
     with open(filename, 'r') as f:
         passwords.insert('1.0', f.read())
-        passwords.config(state='disabled')
-    passwords.pack()
-    go_back_button = customtkinter.CTkButton(passwords,text="Return")
-    go_back_button.place(relx=0.9, rely=0.1)
+    password_frame.pack()
     encrypt()
+
+
+# exit password frame
+def go_back():
+    user_frame.pack()
+    password_frame.destroy()
+
 
 # Log in frame
 login_frame = customtkinter.CTkFrame(app,bg_color=bg,width=width,height=height)
@@ -163,9 +174,6 @@ slider_label.place(relx=0.75, rely=0.8, anchor=tkinter.CENTER)
 open_bttn = customtkinter.CTkButton(user_frame,text = "Saved Passwords",command = saved_passwords)
 open_bttn.place(relx=0.25, rely=0.75, anchor=tkinter.CENTER)
 
-# Saved passwords frame
-password_frame = customtkinter.CTkFrame(app)
-password_frame.pack()
 
 
 app.mainloop()
