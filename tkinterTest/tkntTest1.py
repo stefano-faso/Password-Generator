@@ -14,7 +14,7 @@ app.resizable(0,0)
 bg = customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
 
-
+path = os.getcwd()
 # Password Generator, Maps to label
 def PwrdGenerator():
     Char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&"
@@ -43,7 +43,7 @@ def save():
 # Encryption function
 def encrypt():
     files = []
-    for file in os.listdir():
+    for file in os.listdir(path):
         if file == "tkntTest1.py" or file == "thekey.key":
             continue
         if os.path.isfile(file):
@@ -61,7 +61,7 @@ def encrypt():
 # Decryption function
 def decrypt():
     files = []
-    for file in os.listdir():
+    for file in os.listdir(path):
         if file == "tkntTest1.py" or file == "thekey.key":
             continue
         if os.path.isfile(file):
@@ -106,7 +106,7 @@ def saved_passwords():
     go_back_bttn = customtkinter.CTkButton(password_frame, text='Go Back', command=go_back)
     go_back_bttn.place(relx=0.8, rely=0.05)
     decrypt()
-    filename = 'C:\\Users\\Stefano\\Documents\\GitHub\\Password-Generator\\tkinterTest\\test.txt'
+    filename = 'C:\\Users\\Stefano\\PycharmProjects\\Password-Generator\\tkinterTest\\test.txt'
     with open(filename, 'r') as f:
         passwords.insert('1.0', f.read())
     password_frame.pack()
